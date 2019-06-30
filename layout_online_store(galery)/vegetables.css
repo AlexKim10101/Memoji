@@ -1,0 +1,163 @@
+﻿h2{
+	color: green;
+	text-align: center;
+	position: relative;
+	top 50%;
+}
+
+img{
+	width: 100%;
+	
+}
+
+section{
+	text-align: center;
+	font-family: 'Lucida Grande', Tahoma, Verdana, sans-serif;
+  	font-size: 14px;
+}
+
+pre{
+	display:inline-block;
+	position: relative;
+	
+}
+
+input{
+	transform: translateY(250px);
+	z-index: -1000;
+}
+
+#chetyre1:checked ~  .galery{
+	left:0%;	
+}	
+	
+#chetyre2:checked ~  .galery{
+	left:-77%
+}
+
+#chetyre3:checked ~ .galery{
+	left:-149%;
+}
+
+
+.obductus{
+	position:relative;
+	transform: translateX(-50%);
+	left:  50%;
+	width: 75%;
+	min-width: 800px;
+	max-width: 1200px;
+
+	height: 300px;
+	overflow: hidden;
+
+}
+
+.galery{
+	list-style-type: none;
+
+	position: relative;
+
+	transition: left 1s ease-in-out;
+	box-sizing: border-box;	
+	
+	width: 450%	
+}
+
+.vegetable__card{
+	position:relative;
+	display: inline-block;
+	vertical-align: top;
+	float: left;
+	box-sizing: padding-box;
+
+	width: 4.76%;
+	margin:  .33%;
+	
+	
+}
+
+
+.vegetable__card:hover  {
+	position:relative;
+	z-index: 1;
+	
+	box-shadow: 0 0 5px rgba(0,0,0,0.5); 
+}
+
+
+
+.image:hover ~  div.description{
+	display: block;
+	background: rgba(255,255,255,1);
+
+}
+.description{
+	box-sizing: border-box;
+	text-align: justify;
+	font-size: .7em;
+	display: none;
+	width: 100%;
+	position:relative;
+	padding: 1%;
+
+}
+
+.image__buttom:focus{
+
+
+
+}
+
+.modalbackground{
+	position: absolute;
+	margin: 0; /* убираем отступы */
+	padding: 0; /* убираем отступы */
+	position: fixed; /* фиксируем положение */
+	left:  0px; /* устанавливаем положение */
+	top: 0px; /* устанавливаем положение */
+	right: 0px;
+	bottom: 0px;
+
+	width: 100%; /* устанавливаем положение */
+	height:100%; /* устанавливаем положение */
+	background: rgba(0,0,0,0.8); /* полупрозрачный цвет фона */
+	z-index:1000; /* выводим фон поверх всех слоев на странице браузера */
+	opacity:0; /* Делаем невидимым */
+	pointer-events: none; /* элемент невидим для событий мыши */
+}
+
+.modalbackground:target {
+	opacity:1; /* Делаем видимым */
+	pointer-events: auto; /* элемент видим для событий мыши */
+}
+
+.close {
+	
+	color: #FFFFFF;
+	line-height: 25px;
+	position: absolute;
+	right: 22px;
+	text-align: center;
+	top: 2px;
+	width: 2px;
+	text-decoration: none;
+	font-weight: bold;
+	
+}
+.close:hover{
+	color: black;
+}
+
+.modal{
+	position: fixed;
+	left:  50%; /* устанавливаем положение */
+	top: 50%;
+	transform: translate(-50%,-50%);
+	
+
+
+}
+.hand {
+    cursor: pointer;
+}

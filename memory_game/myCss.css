@@ -1,0 +1,78 @@
+* {
+    box-sizing: border-box;
+}
+
+body{
+	background-color: #CFD0CF;
+}
+
+h1 {
+	text-align: center;
+	font-size: 42px;	
+	color: #434344;
+	margin: 40px 0;
+	font-family: arial;
+	line-height: 47px;
+}
+
+.gameField {
+    display: grid;
+    grid-gap: 25px;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    flex-wrap: wrap;
+    margin-top: 40px;
+    width: 595px;
+    margin-left: auto;
+    margin-right: auto;
+    perspective: 600px;
+}
+
+.card {
+	width: 130px;
+    height: 130px;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+    font-size: 72px;
+    position: relative;
+    border: 5px solid #fff;
+    border-radius: 9px;
+    transform-style: preserve-3d;
+    transition: transform .5s;
+    cursor: pointer;
+
+}
+.card__back {
+    background: linear-gradient(45deg, #22ab93, #19668d);
+    border-radius: 9px;
+}
+.card__front {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotateY(180deg);
+    z-index: -1;
+    background-color: #fff;
+}
+.card__back,
+.card__front {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+}
+.card__turn {
+    transform: rotateY(180deg);
+}
+
+.card__approved{
+
+}
+
+.card__reject{
+
+}
+
+.card__reserved{
+	
+}
