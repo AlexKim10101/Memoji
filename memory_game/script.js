@@ -1,31 +1,34 @@
 'use strict';
 
-var form;
-
-var timer = document.getElementById('timer');
 const GameTime = 1;
-var timeInSeconds = 60 * GameTime;
-var firstClick = true;
+const numberOfCardsToWin = 6;
+
+var form;
 var minutes;
 var seconds;
-var open_cards;
+var openCards;
+var timeInSeconds
+var firstClick
+var goodClick
+var cardBlockedOne;
+var cardBlockedTwo;
+var cardRejectedOne;
+var cardRejectedTwo;
+var cardApprovedOne;
+var cardApprovedTwo;
 
-var card__blocked__one;//"blocked" - означает, что не может быть перевернут
-var card__blocked__two;//одновременно не может быть более 2 "blocked"
-var card__rejected__one;//"rejected" - означает, что после сравнения, емоджи не совпали
-var card__rejected__two;//одновременно не может быть более 2 "rejected"
-var card__approved__one;//пришлось ввести для setTimeout
-var card__approved__two;//пришлось ввести для setTimeout
-var good__click = false;//good__click = true, если была перевернута карта. 
-var bottom__wrapper = document.getElementById('wrapperEndGameSlide');
+var timer = document.getElementById('timer');
+var bottomWrapper = document.getElementById('wrapperEndGameSlide');
 var bottom = document.getElementById('endGameSlide__bottom');
-var endGameSlide__message = document.getElementById('endGameSlide__message');
+var endGameSlideMessage = document.getElementById('endGameSlideMessage');
 
 
 /* Создание формы */
 function initForm(param) {
-    var emojiArr = ['🐊','🐵','🐷','🐰','🐶','🐟'];//эмодзи для игры
-    emojiArr = emojiArr.concat(emojiArr);//создаем 6 пар
+    var emojiArr = ['🐶','🐱','🐭','🐹','🐰','🐻','🐼','🐨','🐯','🦁','🐮','🐷','🐸','🐙','🐵','🦄','🐞','🦀','🐟','🐊','🐓','🦃'];//эмодзи для игры
+    emojiArr.sort(mixArr);
+    emojiArr.splice(numberOfCardsToWin, emojiArr.length-numberOfCardsToWin);//создаем 6 пар
+    emojiArr = emojiArr.concat(emojiArr);
     emojiArr.sort(mixArr);//перемешиваем
 
     //далее создаем шаблон карточки
@@ -49,11 +52,13 @@ function initForm(param) {
     //создаем 12 карточек по шаблону
     var card;
     
-    for (var i = 0; i < 12; i++) {
-        card = el.cloneNode(true);
-        card.querySelector('.card__front').textContent = emojiArr[i];
-        form.appendChild(card);            
-    }
+    emojiArr.forEach(function(emoj_item){    	
+    	card = el.cloneNode(true);
+        card.querySelector('.card__front').textContent = emoj_item;
+        form.appendChild(card);
+    })
+
+
 };
 //для перемешивания
 function mixArr(a, b) {
@@ -62,22 +67,22 @@ function mixArr(a, b) {
 
 //обработка клика
 function cardFlip(event) {
-    good__click = false;
+    goodClick = false;
     let target = event.target;
     let card = target.classList.contains('card') ? target : target.closest('.card');
 
     if (!card) return;
-    if(card.classList.contains('card__turn')||card.classList.contains('card__reject')||card.classList.contains('card__approved')){
+    if(card.classList.contains('card--turn')){
         return;
     }
     else{
-        card.classList.add('card__turn');             
-        good__click = true;
-        if(card__blocked__one){
-            card__blocked__two = card;                
+        card.classList.add('card--turn');             
+        goodClick = true;
+        if(cardBlockedOne){
+            cardBlockedTwo = card;                
         }
         else{
-            card__blocked__one = card;            
+            cardBlockedOne = card;            
             
         }      
     }
@@ -86,38 +91,35 @@ function cardFlip(event) {
 //логика игры
 function validator(){
 
-    if((card__rejected__two)&&(good__click)){     
+    if((cardRejectedTwo)&&(goodClick)){     
 
-        card__rejected__two.classList.remove('card__reject');            
-        card__rejected__one.classList.remove('card__reject');
-        card__rejected__two.classList.remove('card__turn');            
-        card__rejected__one.classList.remove('card__turn');
-        card__rejected__one = null;
-        card__rejected__two = null;
+        cardRejectedTwo.classList.remove('card--reject');            
+        cardRejectedOne.classList.remove('card--reject');
+        cardRejectedTwo.classList.remove('card--turn');            
+        cardRejectedOne.classList.remove('card--turn');
+        cardRejectedOne = null;
+        cardRejectedTwo = null;
         
     }
-    if(card__blocked__two){
-        if(card__blocked__one.childNodes[0].textContent===card__blocked__two.childNodes[0].textContent){
-            card__approved__one = card__blocked__one;
-            card__approved__two = card__blocked__two;
-
-            setTimeout(function(){
-                card__approved__one.classList.add('card__approved');
-                card__approved__two.classList.add('card__approved');
-                open_cards++;
-            },250);             
+    if(cardBlockedTwo){
+        if(cardBlockedOne.childNodes[0].textContent===cardBlockedTwo.childNodes[0].textContent){
+            cardApprovedOne = cardBlockedOne;
+            cardApprovedTwo = cardBlockedTwo;        
+            cardApprovedOne.classList.add('card--approved');
+            cardApprovedTwo.classList.add('card--approved');
+            openCards++;
+                         
         }
         else{
           
-            card__rejected__one = card__blocked__one;
-            card__rejected__two = card__blocked__two;
-            setTimeout(function(){
-                card__rejected__one.classList.add('card__reject');
-                card__rejected__two.classList.add('card__reject');              
-            },250);                
+            cardRejectedOne = cardBlockedOne;
+            cardRejectedTwo = cardBlockedTwo;            
+            cardRejectedOne.classList.add('card--reject');
+            cardRejectedTwo.classList.add('card--reject');              
+                            
         }           
-        card__blocked__one = null;
-        card__blocked__two = null;
+        cardBlockedOne = null;
+        cardBlockedTwo = null;
     }
 
 }
@@ -137,13 +139,13 @@ function endGame(){
     document.removeEventListener('click',cardFlip);
     document.removeEventListener('click',validator);
     document.removeEventListener('click',clock);
-    bottom__wrapper.classList.toggle('to_be');
+    bottomWrapper.classList.toggle('to_be');
     
     if (timeInSeconds == 0){
-        endGameSlide__message.textContent = 'Lose';
+        endGameSlideMessage.textContent = 'Lose';
     }
     else{
-        endGameSlide__message.textContent = 'Win';
+        endGameSlideMessage.textContent = 'Win';
     }
     setTimeout(function(){
         
@@ -165,40 +167,41 @@ function resultGame(){
 
 //начало игры
 function startGame(){
-    bottom__wrapper.classList.remove('to_be');
+    bottomWrapper.classList.remove('to_be');
     bottom.classList.remove('pushed');
-    card__blocked__one = null;
-    card__blocked__two = null;
-    card__rejected__one = null;
-    card__rejected__two = null;
-    card__approved__one = null;
-    card__approved__two = null;
-    good__click = false; 
-    timeInSeconds = 60 * GameTime;
-    timer.textContent = timeFormat(timeInSeconds);
+    cardBlockedOne = null;
+    cardBlockedTwo = null;
+    cardRejectedOne = null;
+    cardRejectedTwo = null;
+    cardApprovedOne = null;
+    cardApprovedTwo = null;
     firstClick = true;
-    open_cards = 0;
+    goodClick = false; 
+    timeInSeconds = 60 * GameTime;
+    timer.textContent = timeFormat(timeInSeconds);   
+    openCards = 0;
 
 
     
     initForm({
         formId: 'gameField'
     });
+
     document.addEventListener('click',cardFlip);
-    document.addEventListener('click',validator);
     document.addEventListener('click',clock);
+    document.addEventListener('click',validator);
+    
     
 }
 
 //таймер
 function clock(){
-    if ((firstClick)&&(good__click)){
+    if ((firstClick)&&(goodClick)){
         firstClick = false;
         var timerId = setInterval(function(){
             timer.textContent = timeFormat(timeInSeconds);            
-            if ((timeInSeconds == 0)||(open_cards == 6)){
+            if ((timeInSeconds == 0)||(openCards == numberOfCardsToWin)){
                 endGame();                
-                
                 clearInterval(timerId);
             }
             else{

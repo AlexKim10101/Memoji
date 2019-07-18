@@ -46,7 +46,7 @@ h1{
     font-size: 72px;
     position: relative;
     background-color: #fff;
-    border: 5px solid #fff;
+    
     border-radius: 9px;
     transform-style: preserve-3d;
     transition: transform .5s;
@@ -56,6 +56,7 @@ h1{
 .card__back {
     background: linear-gradient(45deg, #22ab93, #19668d);
     border-radius: 9px;
+    border: 5px solid #fff;
 }
 .card__front {
     display: flex;
@@ -64,6 +65,8 @@ h1{
     transform: rotateY(180deg);
     z-index: -1;
     background-color: #fff;
+    border: 5px solid #fff;
+    border-radius: 9px;
 }
 .card__back,
 .card__front {
@@ -78,28 +81,21 @@ h1{
 .card__back:hover{
     opacity: .9;
 }
-.card__turn {
+.card--turn {
     transform: rotateY(180deg);
 
 }
 
-
-.card__approved{
+.card--approved > .card__front{
+    background-color:#5ad66f;
     border-color: #5ad66f;
 }
 
-.card__approved > .card__front{
-    background-color:#5ad66f;
-}
 
-
-.card__reject{
+.card--reject > .card__front{
+    background-color:#f44336;
     border-color: #f44336;
 
-}
-
-.card__reject > .card__front{
-    background-color:#f44336;
 }
 
 
@@ -138,7 +134,7 @@ h1{
     min-height: 195px;
 
 }
-.endGameSlide__message{
+.endGameSlideMessage{
     font-family: arial;
     margin-top: 30px;
     font-size: 48px;
